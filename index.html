@@ -1,0 +1,502 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+        <title>Favoureat</title>
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
+
+        <!-- ionic -->
+        <link href="lib/css/ionic.min.css" rel="stylesheet">
+        <link href="lib/css/map-icons.css" rel="stylesheet">
+        <link href="css/button.css" rel="stylesheet">
+        <link href="css/chart.css" rel="stylesheet">
+        <link href="css/color.css" rel="stylesheet">
+        <link href="css/form.css" rel="stylesheet">
+        <link href="css/component.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/style1.css" rel="stylesheet">
+
+        <script src="lib/js/ionic.bundle.min.js"></script>
+        <!-- jquery -->
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+        <!-- parse -->
+        <script src="lib/js/parse-1.2.18.min.js"></script>
+        <script src="lib/js/moment.min.js"></script>
+
+        <!-- google map -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es&sensor=true"></script>
+        <script src="lib/js/markerclusterer.js"></script>
+        <script src="lib/js/map-icons.min.js"></script>
+
+        <!-- cordova -->
+        <script src="cordova.js"></script>
+  </head>
+  <body ng-app="ionicApp">
+    <div>
+		<ion-nav-view class="reverse">
+		</ion-nav-view>
+    </div>
+
+    <script id="mainMenu.html" type="text/ng-template">
+        <ion-side-menus>
+
+            <ion-side-menu-content class="menuContent">
+                <ion-nav-bar class="glass">
+                </ion-nav-bar>
+                <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+            </ion-side-menu-content>
+
+            <ion-side-menu side="left">
+                <header class="bar bar-header redOrange2">
+                    <div class="title sidemenuHeaderSize"><i class="icon ion-ios7-person redFont"></i></div>
+                </header>
+                <ion-content class="has-header redOrange2">
+                    <div class="list side-menu">
+                        <a nav-clear menu-close href="#/main/home" class="button btn2 red sideBtnLocation"><i class="icon ion-home greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/listUpPosting" class="button btn2 red sideBtnLocation"><i class="icon ion-ios7-film greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/listUpOurPostingMap" class=" button btn2 red sideBtnLocation"><i class="icon ion-android-earth greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/listUpLike" class=" button btn2 red sideBtnLocation" ng-click="toListUpLike()"><i class="icon ion-ios7-heart greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/listUpmyLike" class=" button btn2 red sideBtnLocation" ng-click="toListUpmyLike()"><i class="icon ion-ios7-heart greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/listUpmyCheckList" class=" button btn2 red sideBtnLocation" ng-click="toListUpmyCheckList()"><i class="icon ion-checkmark-circled greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/listUpMyComments" class=" button btn2 red sideBtnLocation" ng-click="toListUpMyComments()"><i class="icon ion-chatbox-working greyblueFont" ></i></a>
+                    </div>
+                </ion-content>
+            </ion-side-menu>
+
+            <ion-side-menu side="right">
+                <header class="bar bar-header gradientRed2">
+                    <div class="title sidemenuHeaderSize"><i class="icon ion-ios7-people blueFont"></i></div>
+                </header>
+                <ion-content class="has-header red">
+                    <div class="list">
+                        <a nav-clear menu-close href="#/main/home" class=" button btn2 red sideBtnLocation" ng-click="toHome()"><i class="icon ion-home greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/signIn" class=" button btn2 red sideBtnLocation"><i class="icon ion-log-in greyblueFont"></i></a>
+                        <a nav-clear menu-close href="#/main/signOut" class=" button btn2 blue sideBtnLocation" id="signOut"><i class="icon ion-eye-disabled greyblueFont"></i></a>
+                    </div>
+                </ion-content>
+            </ion-side-menu>
+
+        </ion-side-menus>
+    </script>
+
+    <script id="home.html" type="text/ng-template">
+        <ion-view title="Welcome">
+            <ul class="backgroundSlide">
+                <li><span class="slideImage1">Image 01</span><div><h3></h3></div></li>
+                <li><span class="slideImage2">Image 02</span><div><h3></h3></div></li>
+                <li><span class="slideImage3">Image 03</span><div><h3></h3></div></li>
+                <li><span class="slideImage4">Image 04</span><div><h3></h3></div></li>
+                <li><span class="slideImage5">Image 05</span><div><h3></h3></div></li>
+                <li><span class="slideImage6">Image 06</span><div><h3></h3></div></li>
+            </ul>
+            <ion-nav-buttons side="left">
+                <button ng-click="toggleLeft()" class="button button-icon ion-ios7-arrow-back btn"></button>
+            </ion-nav-buttons>
+
+            <ion-nav-buttons side="right">
+                <button ng-click="toggleRight()" class="button button-icon ion-ios7-arrow-forward btn"></button>
+            </ion-nav-buttons>
+
+            <ion-content class="has-header">
+
+                <div class="sliderHome glass boxShadow">
+                    <ion-slide-box show-pager="true">
+                        <ion-slide class="padding">
+                            <ul class="grid">
+                                <li><div class="gridBox btn"><a href="#/main/listUpPosting"><i class="icon ion-ios7-film darkgreenFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpOurPostingMap"><i class="icon ion-android-earth darkgreenFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpLike"><i class="icon ion-beer ion-ios7-heart redFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpmyPosting"><i class="icon ion-ios7-film darkgreenFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpmyPostingMap"><i class="icon ion-android-earth darkgreenFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpmyLike"><i class="icon ion-ios7-heart redFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpmyCheckList"><i class="icon ion-checkmark-circled orangeFont fontSize04"></i></a></div></li>
+                                <li><div class="gridBox btn"><a href="#/main/listUpMyComments"><i class="icon ion-chatbox-working darkgreenFont fontSize04"></i></a></div></li>
+                            </ul>
+                        </ion-slide>
+                        <ion-slide class="padding">
+                            <h1>your</h1>
+                            <ul class="grid">
+
+                            </ul>
+                        </ion-slide>
+                    </ion-slide-box>
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+<!--  -->
+
+    <script id="listUpPosting.html" type="text/ng-template">
+        <ion-view has-header="true" has-tabs="true" scroll="true" title="favoureat ({{items.length}})">
+
+            <ion-nav-buttons side="left">
+                <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn postLeftBtn"></button>
+                <button class="button button-icon btn ion-chatbubble-working commentBtn hidden"></button>
+            </ion-nav-buttons>
+
+            <ion-nav-buttons side="right">
+                <button ng-click="toListUpMyPosting()" class="button button-icon ion-android-contact btn postRightBtn"></button>
+                <button class="button button-icon btn ion-log-out closeComments hidden" ng-click="closeComments()"></button>
+            </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+
+            </ion-nav-buttons>
+
+            <ion-content class="has-header redOrange">
+                <ul class="grid" >
+                    <li ng-repeat="item in items">
+                        <div class="gridBox gridBoxPhoto btn">
+                            <img ng-src="{{item.attributes.photo.url()}}" class="postImg"/>
+                        </div>
+                    </li>
+
+                </ul>
+                <ion-infinite-scroll on-infinite="loadMore()" distance="1%"></ion-infinite-scroll>
+            </ion-content>
+            <ion-footer>
+                <div class="hidden">
+                    <div class="notepad">
+                        <div class="notepad-heading notepadArea">
+                        <a class="btn2 blue topLeftNotepadBtn {{item.id}}mapBtn" ng-click="popMap(item)"><i class="icon ion-map lightGreenFont fontOneEight"></i></a>
+                        <a class="btn2 blue topLeftNotepadBtn {{item.id}}commentBtn hidden" ng-click="putComment(item)"><i class="icon ion-chatbubble-working lightGreenFont fontOneEight"></i></a>
+                        <h1>{{ item.attributes.head }}</h1>
+                        <a class="btn2 blue topRightNotepadBtn {{item.id}}checkBtn" ng-click="putCheck(item)"><i class="icon ion-ios7-checkmark-outline lightGreenFont fontOneEight"></i></a>
+                        <a class="btn2 blue topRightNotepadBtn {{item.id}}closeMap {{item.id}}closeChart {{item.id}}closePhoto {{item.id}}closeComments hidden"><i class="icon ion-log-out lightGreenFont fontOneEight"></i></a>
+                    </div>
+                    <blockquote class="notepadArea {{item.id}}notepadArea">
+                        <div class="stamp"></div>
+
+                        <div class="container barChartTotal {{item.id}}chart">
+                        <p class="textTotal">total : <span>{{item.attributes.valueTotal}}</span></p>
+                        <div class="progressTotal">
+                        <span class="widthTotal red total" id="total"><span>{{item.attributes.valueTotal}}</span></span>
+                        </div>
+                        </div>
+                        <a class="btn2 postBtn" ng-click="popChart(item)"><i class="icon ion-stats-bars darkgreenFont fontOneEight"></i></a>
+                    </blockquote>
+                    <blockquote class="notepadArea {{item.id}}notepadArea hidden">
+                        <div class="postDetailBox">
+                            <a class="btn2 postComment" ng-click="showCommentTaste(item)"><i class="icon ion-beer darkgreenFont fontOneEight"></i></a>
+                            <a class="btn2 postComment" ng-click="showCommentService(item)"><i class="icon ion-ios7-timer darkgreenFont fontOneEight"></i></a>
+                            <a class="btn2 postComment" ng-click="showCommentPrice(item)"><i class="icon ion-card darkgreenFont fontOneEight"></i></a>
+                            <a class="btn2 postComment" ng-click="showComments(item)"><i class="icon ion-chatbubbles darkgreenFont fontOneEight"></i></a>
+                        <div class="">
+                            <p class="hidden {{item.id}}commentTaste comments">{{item.attributes.commentTaste}}</p>
+                            <p class="hidden {{item.id}}commentService comments">{{item.attributes.commentService}}</p>
+                            <p class="hidden {{item.id}}commentPrice comments">{{item.attributes.commentPrice}}</p>
+                        </div>
+                        </div>
+                        <p class="textCenter">{{ item.attributes.when }}</p>
+                    </blockquote>
+                    <div class="popPhoto {{item.id}}popPhoto boxShadow hidden"></div>
+                    <div class="popChart {{item.id}}popChart hidden"></div>
+                    <div class="popMap {{item.id}}popMap boxShadow hidden"><div id="{{item.id}}map"></div></div>
+                    </div>
+                </div>
+                <div class="popComments boxShadow hidden">
+                    <ion-content class="padding" start-y="120">
+                        <div ng-repeat="comment in comments" class="styleChat">
+                            <div class="talk-bubble tri-right left-in round">
+                                <div class="talktext">
+                                    <img ng-src="{{item.attributes.photo.url()}}">
+                                    <h2>{{comment.attributes.Comments}}</h2>
+                                    <p><span id="{{comment.id}}before"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </ion-content>
+                </div>
+            </ion-footer>
+        </ion-view>
+    </script>
+
+
+    <script id="listUpmyPosting.html" type="text/ng-template">
+        <ion-view title="My Posting">
+
+            <ion-nav-buttons side="left">
+                <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+            </ion-nav-buttons>
+
+            <ion-nav-buttons side="right">
+                <button ng-click="toListUpPosting()" class="button button-icon ion-android-friends btn"></button>
+            </ion-nav-buttons>
+
+            <ion-content class="has-header redOrange">
+
+                <ion-list show-delete="data.showDelete">
+                    <div>
+                        <button ng-click="openModal()" class="button button-icon btn ion-ios7-cloud-upload"></button>
+                        <button class="button button-icon icon ion-ios7-minus-outline  " ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+                    </div>
+                    <ion-item ng-repeat="myItem in myItems" class="item item-thumbnail-left">
+                        <img ng-src="{{myItem.attributes.photo.url()}}" id="imgCircle">
+                        <h2>{{ myItem.attributes.head }}</h2>
+                        <p>{{ myItem.attributes.when }}<br><span id="{{myItem.id}}"></span></p>
+                        <ion-option-button class="button-positive" ng-click="getComments(myItem)">
+                            <a class="button button-icon icon ion-chatboxes iconDown"></a>
+                        </ion-option-button>
+                        <ion-option-button class="button-info" ng-click="toViewMap(myItem)">
+                            <a class="button button-icon icon ion-ios7-navigate iconDown"></a>
+                        </ion-option-button>
+                        <ion-delete-button class="ion-minus-circled" ng-click="removePosting(myItem)">
+                        </ion-delete-button>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+            <ion-footer>
+                <div class="popMap boxShadow hidden"></div>
+
+            </ion-footer>
+        </ion-view>
+    </script>
+
+    <script id="modal.html" type="text/ng-template">
+        <div class="modal glass" ng-controller="addPostCtrl">
+            <div class="bar bar-header glass">
+                <button ng-click="closeModal()" class="button button-icon ion-log-out btn orangeSoft"></button>
+                <h1 class="title">post eat</h1>
+                <button ng-click="postSend()" class="button button-icon ion-paper-airplane btn orangeSoft"></button>
+            </div>
+            <ion-content class="red paddingTop50 glass">
+                <div class="notepad">
+                    <div class="notepad-heading">
+                        <label class="item item-input customInput">
+                            <span class="input-label postTitleWidth">Title</span>
+                            <input ng-model="post.head" id="postInput" type="text" maxlength="20" required>
+                        </label>
+                    </div>
+                    <blockquote>
+                        <div ng-click="getPhoto()">
+                            <button class="button button-small photoBtn btn blue">Photo Up</button>
+                        </div><hr>
+                        <label class="item item-input customInput">
+                            <input class="postCommentInput" ng-model="post.body" type="text" placeholder=" comments..." maxlength="20" required>
+                        </label>
+                        <div class="item item-input customInput range range-positive">
+                            <i class="icon ion-beer greyblueFont"></i>
+                            <input type="range" name="volume" min="1" max="7" value="{{sliderTaste.rangeValue}}" ng-model="sliderTaste.rangeValue" required>
+                            {{sliderTaste.rangeValue}}
+                        </div>
+
+                        <div class="item item-input customInput range range-positive">
+                            <i class="icon ion-ios7-timer greyblueFont"></i>
+                            <input type="range" name="volume" min="1" max="7" value="{{sliderService.rangeValue}}" ng-model="sliderService.rangeValue" required>
+                            {{sliderService.rangeValue}}
+                        </div>
+
+                        <div class="item item-input customInput range range-positive">
+                            <i class="icon ion-card greyblueFont"></i>
+                            <input type="range" name="volume" min="1" max="7" value="{{sliderPrice.rangeValue}}" ng-model="sliderPrice.rangeValue" required>
+                            {{sliderPrice.rangeValue}}
+                        </div>
+                    </blockquote>
+                </div>
+            </ion-content>
+
+        </div>
+    </script>
+
+    <script id="listUpOurPostingMap.html" type="text/ng-template">
+        <ion-view title="Our Posting">
+
+            <ion-nav-buttons side="left">
+                <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+            </ion-nav-buttons>
+
+            <ion-nav-buttons side="right">
+                <button ng-click="toListUpMyPostingMap()" class="button button-icon ion-android-contact btn"></button>
+            </ion-nav-buttons>
+
+            <ion-content class="has-header">
+                <div id="map" class="boxShadow"></div>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script id="listUpMyPostingMap.html" type="text/ng-template">
+        <ion-view title="My Posting">
+
+            <ion-nav-buttons side="left">
+                <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+            </ion-nav-buttons>
+
+            <ion-nav-buttons side="right">
+                <button ng-click="toListUpOurPostingMap()" class="button button-icon ion-android-friends btn"></button>
+            </ion-nav-buttons>
+
+            <ion-content class="has-header">
+                <div id="myPostingMap" class="boxShadow"></div>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script id="listUpmyCheckList.html" type="text/ng-template">
+        <ion-view title="Checked favoureat ({{likeItems.length}})">
+
+            <ion-nav-buttons side="left">
+                <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+            </ion-nav-buttons>
+
+            <ion-nav-buttons side="right">
+                <button class="button button-icon icon ion-ios7-minus-outline  " ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+            </ion-nav-buttons>
+
+            <ion-content class="has-header">
+                <ion-list show-delete="data.showDelete">
+                    <ion-item ng-repeat="likeItem in likeItems" class="item item-thumbnail-left">
+                        <img ng-src="{{likeItem.attributes.photo.url()}}">
+                        <h2>{{likeItem.attributes.head}}</h2>
+                        <p>{{likeItem.attributes.body}}</p>
+                        <p>{{likeItem.attributes.when}}<br><span id="{{likeItem.id}}"></span></p>
+                        <ion-option-button class="button-positive" ng-click="getCheckListInfo(likeItem)">
+                            <a class="button button-icon icon ion-ios7-navigate iconDown"></a>
+                        </ion-option-button>
+                        <ion-option-button class="button-info" ng-click="putLike(likeItem)">
+                            <a class="button button-icon icon ion-heart iconDown" id="color{{likeItem.id}}"></a>
+                        </ion-option-button>
+                        <ion-delete-button class="ion-minus-circled" ng-click="removeCheck(likeItem)">
+                        </ion-delete-button>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+            <ion-footer>
+                <div class="popMap boxShadow hidden"></div>
+            </ion-footer>
+        </ion-view>
+    </script>
+
+    <script id="listUpLike.html" type="text/ng-template">
+        <ion-view title="like favoureat ({{likeItems.length}})">
+
+            <ion-nav-buttons side="left">
+                <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+            </ion-nav-buttons>
+
+            <ion-content class="has-header"  >
+                <ion-list    >
+                    <ion-item ng-repeat="likeItem in likeItems" class="item item-thumbnail-left">
+                        <img ng-src="{{likeItem.attributes.photo.url()}}">
+                        <h2>{{ likeItem.attributes.head }}</h2>
+                        <h4>{{ likeItem.attributes.body }}</h4>
+                        <p>{{ likeItem.attributes.when }}<span id="{{likeItem.id}}"></span></p>
+                        <ion-option-button class="button-positive" ng-click="getPeopleCheckListInfo(likeItem)">
+                            <a class="button button-icon icon ion-ios7-navigate iconDown"></a>
+                        </ion-option-button>
+                        <ion-option-button class="button-info" ng-click="putCheck(likeItem)">
+                            <a class="tab-item assertive button button-icon icon ion-ios7-checkmark iconDown"></a>
+                        </ion-option-button>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+            <ion-footer>
+                <div class="popMap boxShadow hidden"></div>
+            </ion-footer>
+        </ion-view>
+    </script>
+
+    <script id="listUpmyLike.html" type="text/ng-template">
+      <ion-view title="like favoureat ({{likeItems.length}})">
+
+        <ion-nav-buttons side="left">
+          <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+        </ion-nav-buttons>
+
+        <ion-nav-buttons side="right">
+          <button class="button button-icon ion-ios7-minus-outline  " ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+        </ion-nav-buttons>
+        <ion-content class="has-header">
+			<ion-list show-delete="data.showDelete" >
+				<ion-item ng-repeat="likeItem in likeItems" class="item item-thumbnail-left">
+					<img ng-src="{{likeItem.attributes.photo.url()}}">
+					<h2>{{likeItem.attributes.head}}</h2>
+					<p>{{likeItem.attributes.body}}</p>
+					<p>{{likeItem.attributes.when}}<br><span id="{{likeItem.id}}"></span></p>
+					<ion-option-button class="button-positive" ng-click="getCheckListInfo(likeItem)">
+						<a class="button button-icon icon ion-ios7-navigate iconDown"></a>
+					</ion-option-button>
+					<ion-delete-button class="ion-minus-circled" ng-click="removeLike(likeItem)">
+					</ion-delete-button>
+				</ion-item>
+			</ion-list>
+        </ion-content>
+		<ion-footer>
+			<div class="popMap boxShadow hidden"></div>
+		</ion-footer>
+      </ion-view>
+    </script>
+
+    <script id="listUpMyComments.html" type="text/ng-template">
+      <ion-view title="comments {{comments.length}}">
+
+        <ion-nav-buttons side="left">
+          <button ng-click="back()" class="button button-icon ion-ios7-arrow-back btn"></button>
+        </ion-nav-buttons>
+
+        <ion-nav-buttons side="right">
+          <button class="button button-icon icon ion-ios7-minus-outline  " ng-click="data.showDelete = !data.showDelete; data.showReorder = false"></button>
+        </ion-nav-buttons>
+
+        <ion-content class="has-header">
+		    <ion-list show-delete="data.showDelete" >
+				<ion-item ng-repeat="myComment in myComments" class="item">
+					<h2>{{myComment.attributes.Comments}}</h2>
+					<p>{{myComment.attributes.when}}<br><span id="{{myComment.id}}"></span></p>
+					<ion-delete-button class="ion-minus-circled" ng-click="removeComment(myComment)">
+					</ion-delete-button>
+				</ion-item>
+			</ion-list>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="signIn.html" type="text/ng-template">
+      <ion-view title="sign in">
+        <ion-content class="has-header">
+   		    <div class="signIn">
+		    	<h1>sign in</h1>
+			    <input ng-model="userData.name" type="text" name="name" class="signIn-input" placeholder="name" autofocus>
+			    <input ng-model="userData.email" type="email" name="email" class="signIn-input" placeholder="Email Address">
+			    <input ng-model="userData.password" type="password" name="password" class="signIn-input" placeholder="Password">
+			    <button class="button button-block signIn-button btn orange" ng-click="signIn(userData)">Sign-In</button>
+			</div>
+			<div class="assertive" ng-show="error.message">{{error.message}}</div>
+        </ion-content>
+      </ion-view>
+    </script>
+
+    <script id="signOut.html" type="text/ng-template">
+      <ion-view title="signOut">
+
+        <ion-nav-buttons side="left">
+          <button ng-click="toggleLeft()" class="button button-icon ion-ios7-arrow-back btn"></button>
+        </ion-nav-buttons>
+
+        <ion-content class="has-header">
+		    <div class="center">
+                <h2 class="textCenter">{{user.get('username')}}</h2>
+                <p class="textCenter">You want to sign out?</p>
+                <div class="center widthBtn"><button ng-click="signOut()" >sign out</button></div>
+            </div>
+        </ion-content>
+      </ion-view>
+    </script>
+<!--  -->
+<!-- side right -->
+
+
+
+
+
+
+
+	<!-- app scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/listUp.js"></script>
+  </body>css/
+</html>
+
